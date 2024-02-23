@@ -330,9 +330,16 @@ return [
                     'label_color' => 'success',
                 ],
                 [
-                    'text'        => 'pages',
+                    'text'        => 'Pages',
                     'route' => 'admin.pages.index',
-                    'icon'        => 'far fa-fw fa-file',
+                    'icon'        => 'fas fa-file',
+                    'label'       => config('adminlte.pages_dash', 0),
+                    'label_color' => 'success',
+                ],
+                [
+                    'text'        => 'Posts',
+                    'route' => 'admin.posts.index',
+                    'icon'        => 'fas fa-file-alt',
                     'label'       => config('adminlte.pages_dash', 0),
                     'label_color' => 'success',
                 ],

@@ -12,7 +12,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('admin.posts.index', compact('posts'));
     }
 
     /**
@@ -20,7 +21,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -28,7 +29,32 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate the request data
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'meta_title' => 'nullable|max:255',
+            'slug' => 'nullable|unique:posts,slug',
+            'short_description' => 'required',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'content' => 'nullable',
+        ]);
+
+        // Handle file upload for thumbnail
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+            $validatedData['thumbnail'] = $thumbnailPath;
+        }
+
+        // Create a new Post instance with the validated data
+        $post = Post::create($validatedData);
+
+        // Attach categories to the post
+        $post->categories()->attach($request->categories);
+
+        // Redirect back with success message
+        return redirect()->route('admin.posts.index')->with('success', 'Post created successfully.');
     }
 
     /**

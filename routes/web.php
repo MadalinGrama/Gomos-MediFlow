@@ -1,16 +1,18 @@
 <?php
 
+use App\Models\Post;
+use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\Admin\SettingsController;
-use App\Models\Appointment;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +85,13 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/appointments', [AppointmentController::class, 'index'])->name('admin.appointments.index');
         Route::get('/appointments/show-{id}', [AppointmentController::class, 'show'])->name('admin.appointments.show');
         Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('admin.appointment.destroy');
+
+    });
+
+    Route::prefix('admin')->group(function(){
+        Route::get('/posts', [PostController::class, 'index'])->name('admin.posts.index');
+        Route::get('/posts/create', [PostController::class, 'create'])->name('admin.posts.create');
+        Route::post('/posts', [PostController::class, 'store'])->name('admin.posts.store');
 
     });
 });
