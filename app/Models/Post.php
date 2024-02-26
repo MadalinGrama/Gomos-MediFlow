@@ -17,4 +17,9 @@ class Post extends Model
     'short_description',
     'content',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
